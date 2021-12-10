@@ -9,3 +9,5 @@ tmp
 release
 yarn.lock
 package-lock.json
+
+.env
