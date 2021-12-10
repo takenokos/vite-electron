@@ -1,6 +1,6 @@
 {
   "appId": "com.takenokos.${productName}",
-  "productName": "ElectronScrcpy",
+  "productName": "ViteElectron",
   "copyright": "Copyright © 2021 ${author}",
   "directories": {
     "output": "release/${version}/${os}"
