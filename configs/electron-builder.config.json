@@ -1,0 +1,32 @@
+{
+  "appId": "com.takenokos.${productName}",
+  "productName": "ElectronScrcpy",
+  "copyright": "Copyright © 2021 ${author}",
+  "directories": {
+    "output": "release/${version}/${os}"
+  },
+  "files": [
+    "!node_modules",
+    "dist",
+    "package.json"
+  ],
+  "mac": {
+    "category": "public.app-category.utilities"
+  },
+  "win": {
+    "target": [
+      {
+        "target": "nsis",
+        "arch": [
+          "x64"
+        ]
+      }
+    ]
+  },
+  "nsis": {
+    "oneClick": false,
+    "perMachine": false,
+    "allowToChangeInstallationDirectory": true,
+    "deleteAppDataOnUninstall": false
+  }
+}
