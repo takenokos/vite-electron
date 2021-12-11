@@ -7,6 +7,8 @@ import chalk from 'chalk'
 import { OutputPlugin } from 'rollup'
 import waitOn from 'wait-on'
 import { join, resolve } from 'path'
+
+const __dirname = resolve()
 const TAG = chalk.bgGreen(' dev.ts ')
 
 /**
@@ -54,6 +56,22 @@ async function watchMain() {
         stdio: 'inherit',
         env: process.env,
       })
+      waitOn({
+        resources: [
+          `tcp:127.0.0.1:${process.env.PORT}`,
+          join(__dirname, 'dist/main/index.cjs'),
+          join(__dirname, 'dist/preload/index.cjs')
+        ],
+      }).then(() => {
+        console.groupEnd()
+        console.clear()
+        const server = chalk.bgBlueBright(' server ')
+        const url = chalk.blueBright(`http://127.0.0.1:${process.env.PORT}`)
+        console.group(server, `running in ${url}`)
+        console.groupEnd()
+      }).catch(err => {
+        console.error(err)
+      })
     },
   })
 
@@ -83,20 +101,3 @@ const viteDevServer = await createServer({ configFile: 'configs/vite-renderer.co
 await viteDevServer.listen()
 await watchPreload(viteDevServer)
 await watchMain()
-const __dirname = resolve()
-waitOn({
-  resources: [
-    `tcp:127.0.0.1:${process.env.PORT}`,
-    join(__dirname, 'dist/main/index.cjs'),
-    join(__dirname, 'dist/preload/index.cjs')
-  ],
-}).then(() => {
-  console.groupEnd()
-  console.clear()
-  const server = chalk.bgBlueBright(' server ')
-  const url = chalk.blueBright(`http://127.0.0.1:${process.env.PORT}`)
-  console.group(server, `running in ${url}`)
-  console.groupEnd()
-}).catch(err => {
-  console.error(err)
-})

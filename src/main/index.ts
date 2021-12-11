@@ -1,6 +1,6 @@
 import os from 'os'
 import { join } from 'path'
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, session } from 'electron'
 // https://stackoverflow.com/questions/42524606/how-to-get-windows-version-using-node-js
 const isWin7 = os.release().startsWith('6.1')
 if (isWin7) app.disableHardwareAcceleration()
@@ -22,6 +22,27 @@ async function bootstrap() {
   if (app.isPackaged) {
     win.loadFile(join(__dirname, '../renderer/index.html'))
   } else {
+    //install vue devtool
+    try {
+      console.log(process.platform)
+      let devpath: string = ''
+      switch (process.platform) {
+        case 'darwin': // mac
+          devpath = '/Library/Application Support/Google/Chrome/Default/Extensions'
+          break
+        case 'win32': // windows
+          devpath = '%LOCALAPPDATA%\Google\Chrome\User Data\Default\Extensions'
+          break
+        case 'linux':
+          devpath = '/.config/google-chrome/Default/Extensions'
+          break
+      }
+      devpath += '/ljjemllljcmogpfapbkkighbhhppjdbg/6.0.0.20_0';
+      console.log(join(os.homedir(), devpath))
+      await session.defaultSession.loadExtension(join(os.homedir(), devpath));
+    } catch (e) {
+      console.error('Vue Devtools failed to install:', e);
+    }
     const url = `http://127.0.0.1:${process.env['PORT']}`
     win.loadURL(url)
     win.maximize()
