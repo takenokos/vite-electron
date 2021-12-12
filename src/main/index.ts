@@ -31,7 +31,7 @@ async function bootstrap() {
           devpath = '/Library/Application Support/Google/Chrome/Default/Extensions'
           break
         case 'win32': // windows
-          devpath = '%LOCALAPPDATA%\Google\Chrome\User Data\Default\Extensions'
+          devpath = '/AppData/Local/Google/Chrome/User Data/Default/Extensions'
           break
         case 'linux':
           devpath = '/.config/google-chrome/Default/Extensions'
